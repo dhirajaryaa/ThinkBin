@@ -1,7 +1,9 @@
+import Hero from "./components/landing/Hero";
+
 export default function Home() {
   return (
-    <main>
-hello world
+    <main className="min-h-screen w-full max-w-5xl mx-auto">
+      <Hero />
     </main>
   );
 }
