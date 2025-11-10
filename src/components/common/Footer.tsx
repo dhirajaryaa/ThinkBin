@@ -1,5 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { links } from "@/data/links";
+import Link from "next/link";
 
 function Footer() {
   return (
@@ -12,9 +13,9 @@ function Footer() {
             key={index}
             asChild
           >
-            <a href={link.href} target="_blank" referrerPolicy="no-referrer">
+            <Link href={link.href}>
               {link.title}
-            </a>
+            </Link>
           </Badge>
         ))}
       </nav>
