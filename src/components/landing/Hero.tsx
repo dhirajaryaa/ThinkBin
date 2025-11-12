@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Brain, SparkleIcon } from 'lucide-react';
-import { Badge } from "../ui/badge";
+import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 
 function Hero() {
