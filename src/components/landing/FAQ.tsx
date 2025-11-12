@@ -53,10 +53,10 @@ function FAQ() {
             value={`item-${i}`}
             className="border-b border-foreground/10 py-3"
           >
-            <AccordionTrigger className="text-left text-base font-medium">
+            <AccordionTrigger className="text-left sm:text-base font-medium">
               {item.q}
             </AccordionTrigger>
-            <AccordionContent className="text-sm text-muted-foreground leading-relaxed">
+            <AccordionContent className="sm:text-sm text-muted-foreground leading-relaxed">
               {item.a}
             </AccordionContent>
           </AccordionItem>

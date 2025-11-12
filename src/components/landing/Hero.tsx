@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Brain, LucideUnlock, SparkleIcon } from 'lucide-react';
+import { ArrowRight, Brain, SparkleIcon } from 'lucide-react';
 import { Badge } from "../ui/badge";
 import Link from "next/link";
 
@@ -8,7 +8,7 @@ function Hero() {
     <section className="my-12 sm:my-20 w-full">
       <div className="w-full sm:w-3/4 mx-auto">
       <div className="my-8 flex items-center justify-center">
-        <Badge  className=" font-normal px-4 py-2" variant={'secondary'}>Unlock Productivity <Brain className="ml-1" /></Badge>
+        <Badge  className="font-normal px-4 py-2 border-2 border-muted-foreground/10 " variant={'secondary'}>Unlock Productivity <Brain className="ml-0.5" /></Badge>
       </div>
         <h1 className="capitalize text-center text-3xl sm:text-5xl md:text-6xl font-extrabold text-foreground">
           your second brain for everything you learn.

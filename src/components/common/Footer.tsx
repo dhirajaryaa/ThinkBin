@@ -22,7 +22,7 @@ function Footer() {
       <p className="text-sm sm:text-base text-muted-foreground text-center">
         &copy; {new Date().getFullYear()} ThinkBin. All rights reserved.
       </p>
-      <div className="w-full tracking-wide py-8 text-5xl sm:text-7xl lg:text-9xl font-extrabold text-center text-foreground/20 select-none">
+      <div className="w-full tracking-wide py-8 text-5xl sm:text-7xl lg:text-9xl font-black text-center text-foreground/20 select-none uppercase font-serif">
         Think Bin
       </div>
       <p className="text-sm sm:text-base text-muted-foreground text-center">
