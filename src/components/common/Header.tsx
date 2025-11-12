@@ -9,7 +9,7 @@ function Header() {
         <Logo />
         <div className="space-x-8 sm:block hidden">
           <a
-            href={"#feature"}
+            href={"/#feature"}
             className="text-base font-normal hover:underline"
           >
             Features
