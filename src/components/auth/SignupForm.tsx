@@ -1,25 +1,25 @@
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 import {
   Field,
   FieldDescription,
   FieldGroup,
   FieldLabel,
   FieldSeparator,
-} from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
-import Google from "@/components/icons/Google"
-import Link from "next/link"
-import Password from "./Password"
+} from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import Google from "@/components/icons/Google";
+import Link from "next/link";
+import Password from "./Password";
 
-export function LoginForm({
+export function SignUpForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
@@ -28,22 +28,28 @@ export function LoginForm({
       <Card>
         <CardHeader className="text-center">
           <CardTitle className="text-xl">Welcome back</CardTitle>
-          <CardDescription>
-            Login with your Google account
-          </CardDescription>
+          <CardDescription>Signup with your Google account</CardDescription>
         </CardHeader>
         <CardContent>
           <form>
             <FieldGroup>
               <Field>
-                <Button variant="outline" className="bg-muted cursor-pointer" type="button">
-                 <Google />
-                  Login with Google
+                <Button
+                  variant="outline"
+                  className="bg-muted cursor-pointer"
+                  type="button"
+                >
+                  <Google />
+                  Signup with Google
                 </Button>
               </Field>
               <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
                 Or continue with
               </FieldSeparator>
+              <Field>
+                <FieldLabel htmlFor="name">Full Name</FieldLabel>
+                <Input id="name" type="text" placeholder="suraj dev" required />
+              </Field>
               <Field>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
                 <Input
@@ -54,21 +60,13 @@ export function LoginForm({
                 />
               </Field>
               <Field>
-                <div className="flex items-center">
-                  <FieldLabel htmlFor="password">Password</FieldLabel>
-                  {/* <a
-                    href="#"
-                    className="ml-auto text-sm underline-offset-4 hover:underline"
-                  >
-                    Forgot your password?
-                  </a> */}
-                </div>
+                <FieldLabel htmlFor="password">Password</FieldLabel>
                 <Password />
               </Field>
               <Field>
-                <Button type="submit">Login</Button>
+                <Button type="submit">Signup</Button>
                 <FieldDescription className="text-center">
-                  Don&apos;t have an account? <Link href="/signup">Sign up</Link>
+                  already have an account? <Link href="/login">Login</Link>
                 </FieldDescription>
               </Field>
             </FieldGroup>
@@ -76,5 +74,5 @@ export function LoginForm({
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

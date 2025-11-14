@@ -7,7 +7,7 @@ function Password() {
   const [showPassword, setShowPassword] = useState(false);
   return (
     <div className="flex relative w-full items-center">
-      <Input id="password" type={showPassword ? "text" : "password"} required />
+      <Input id="password" type={showPassword ? "text" : "password"} placeholder="xyz@123" required />
       <button
         onClick={() => setShowPassword(!showPassword)}
         className="absolute right-2 cursor-pointer"
