@@ -1,12 +1,15 @@
 {
-  "name": "hello",
+  "name": "ThinkBin",
+  "description": "your second brain that collects everything you learn and makes it searchable + recallable instantly",
+  "author": "Dhiraj Arya[dhirajkum4580@gmail.com]",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "prisma:sync": "pnpm dlx prisma format && pnpm dlx prisma validate && pnpm dlx prisma generate"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

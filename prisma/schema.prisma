@@ -1,9 +1,74 @@
 generator client {
-  provider = "prisma-client"
-  output   = "../src/generated/prisma"
+  provider        = "prisma-client"
+  output          = "../src/generated/prisma"
+  previewFeatures = ["postgresqlExtensions"]
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [vector]
+}
+
+// -------------------------
+// user
+// -------------------------
+model User {
+  id         String   @id @default(uuid())
+  name       String
+  avatar     String?  @default("")
+  email      String   @unique
+  isVerified Boolean? @default(true)
+  provider   String?  @default("credential")
+  createdAt  DateTime @default(now())
+  notes      Note[]
+}
+
+// -------------------------
+// NOTES (Raw uploaded notes)
+// -------------------------
+model Note {
+  id         String      @id @default(uuid())
+  user       User        @relation(fields: [userId], references: [id])
+  userId     String
+  sourceType SourceType  @default(TEXT)
+  sourceLink String      @default("#")
+  chunks     NoteChunk[]
+  tags       NoteTag[]
+  createdAt  DateTime    @default(now())
+}
+
+enum SourceType {
+  TEXT
+  URL
+  PDF
+  IMAGE
+  CODE
+  OTHER
+}
+
+// -------------------------
+// NOTE CHUNK (for embeddings)
+// -------------------------
+
+model NoteChunk {
+  id         String                       @id @default(cuid())
+  note       Note                         @relation(fields: [noteId], references: [id])
+  noteId     String
+  chunkIndex Int
+  content    String
+  embedding  Unsupported("vector(1536)")?
+  createdAt  DateTime                     @default(now())
+}
+
+// -------------------------
+// NOTE TAG (manual + auto)
+// -------------------------
+model NoteTag {
+  id         String   @id @default(cuid())
+  note       Note     @relation(fields: [noteId], references: [id])
+  noteId     String
+  tag        String
+  confidence Float?   @default(99.9)
+  createdAt  DateTime @default(now())
 }
