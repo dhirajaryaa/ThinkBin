@@ -20,6 +20,8 @@ import Google from "@/components/icons/Google";
 import Link from "next/link";
 import Password from "./Password";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { signUpSchema } from "@/schema/auth.schema";
 
 type Inputs = {
   name: string;
@@ -35,7 +37,10 @@ export function SignUpForm({
     register,
     handleSubmit,
     formState: { errors,isValid },
-  } = useForm<Inputs>();
+  } = useForm<Inputs>({
+    mode:"onChange",
+    resolver: zodResolver(signUpSchema)
+  });
   
   // form submit
   const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
