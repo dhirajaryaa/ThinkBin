@@ -1,3 +1,4 @@
+'use client'
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,11 +19,27 @@ import { Input } from "@/components/ui/input";
 import Google from "@/components/icons/Google";
 import Link from "next/link";
 import Password from "./Password";
+import { useForm, SubmitHandler } from "react-hook-form";
+
+type Inputs = {
+  name: string;
+  email: string;
+  password: string;
+};
 
 export function SignUpForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors,isValid },
+  } = useForm<Inputs>();
+  
+  // form submit
+  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
@@ -31,7 +48,7 @@ export function SignUpForm({
           <CardDescription>Signup with your Google account</CardDescription>
         </CardHeader>
         <CardContent>
-          <form>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <FieldGroup>
               <Field>
                 <Button
@@ -48,23 +65,28 @@ export function SignUpForm({
               </FieldSeparator>
               <Field>
                 <FieldLabel htmlFor="name">Full Name</FieldLabel>
-                <Input id="name" type="text" placeholder="suraj dev" required />
+                <Input
+                  {...register("name", { required: "Name is required" })}
+                  aria-invalid={errors.name ? "true" : "false"}
+                  placeholder="dhiraj arya"
+                />
+                {errors.name && <p className="text-destructive text-xs">{errors.name.message}</p>}
               </Field>
               <Field>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
-                <Input
-                  id="email"
-                  type="email"
+                 <Input
+                  {...register("email", { required: "Email is required" })}
+                  aria-invalid={errors.email ? "true" : "false"}
                   placeholder="m@example.com"
-                  required
                 />
+                {errors.email && <p className="text-destructive text-xs">{errors.email.message}</p>}
               </Field>
               <Field>
                 <FieldLabel htmlFor="password">Password</FieldLabel>
-                <Password />
+                <Password register={register} errors={errors}/>
               </Field>
               <Field>
-                <Button type="submit">Signup</Button>
+                <Button type="submit" disabled={!isValid}>Signup</Button>
                 <FieldDescription className="text-center">
                   already have an account? <Link href="/login">Login</Link>
                 </FieldDescription>
