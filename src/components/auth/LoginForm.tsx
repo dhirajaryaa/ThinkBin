@@ -33,7 +33,7 @@ export function LoginForm({
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors,isValid },
   } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
@@ -83,7 +83,7 @@ export function LoginForm({
                 <Password register={register} errors={errors} />
               </Field>
               <Field>
-                <Button type="submit">Login</Button>
+                <Button type="submit" disabled={!isValid}>Login</Button>
                 <FieldDescription className="text-center">
                   Don&apos;t have an account?{" "}
                   <Link href="/signup">Sign up</Link>
