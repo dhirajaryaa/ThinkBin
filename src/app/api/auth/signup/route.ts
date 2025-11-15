@@ -13,7 +13,6 @@ interface Body {
 }
 
 export async function POST(request: Request) {
-     return errorResponse("user already exist!", 400);
     const body: Body = await request.json();
     // 1. check user input is valid
     const checkUserInput = signUpSchema.safeParse(body);
