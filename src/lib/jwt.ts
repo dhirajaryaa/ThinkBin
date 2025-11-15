@@ -7,13 +7,17 @@ export interface TokenPayload extends JWTPayload {
     name: string;
 }
 
-const accessSecret = new TextEncoder().encode(process.env.R_TOKEN_SECRET!);
+const accessSecret = new TextEncoder().encode(process.env.ACCESS_TOKEN_SECRET!);
 const refreshSecret = new TextEncoder().encode(process.env.REFRESH_TOKEN_SECRET!);
 
 
 //  sign token 
 export async function signAccessAndRefreshToken(payload: TokenPayload) {
-    const accessToken = await new SignJWT(payload)
+    const accessToken = await new SignJWT({
+        id: payload.id,
+        email: payload.email,
+        name: payload.name
+    })
         .setExpirationTime(process.env.ACCESS_TOKEN_EXPIRY!)
         .setProtectedHeader({ alg: "HS256" })
         .setIssuedAt()
