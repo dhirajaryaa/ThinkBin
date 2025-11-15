@@ -13,15 +13,16 @@ datasource db {
 // user
 // -------------------------
 model User {
-  id         String   @id @default(uuid())
-  name       String
-  avatar     String?  @default("")
-  email      String   @unique
-  password   String
-  isVerified Boolean? @default(true)
-  provider   String?  @default("credential")
-  createdAt  DateTime @default(now())
-  notes      Note[]
+  id           String   @id @default(uuid())
+  name         String
+  avatar       String?  @default("")
+  email        String   @unique
+  password     String
+  refreshToken String?  @default("")
+  isVerified   Boolean? @default(true)
+  provider     String?  @default("credential")
+  createdAt    DateTime @default(now())
+  notes        Note[]
 }
 
 // -------------------------

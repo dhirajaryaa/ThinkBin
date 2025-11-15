@@ -51,7 +51,15 @@ export async function POST(request: Request) {
     const { accessToken, refreshToken } = await signAccessAndRefreshToken(newUser);
     if (!accessToken || !refreshToken) {
         return errorResponse("something went wrong", 500);
-    };    
+    };  
+    await prisma.user.update({
+        where: {
+            id: newUser.id
+        },
+        data: {
+            refreshToken: refreshToken
+        }
+    })  
     // 6. return token and user 
     return successWithCookiesResponse("user created successfully", 201, { user: newUser, accessToken }, {
         set: {
