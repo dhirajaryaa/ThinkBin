@@ -10,6 +10,7 @@ CREATE TABLE "User" (
     "name" TEXT NOT NULL,
     "avatar" TEXT DEFAULT '',
     "email" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
     "isVerified" BOOLEAN DEFAULT true,
     "provider" TEXT DEFAULT 'credential',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
