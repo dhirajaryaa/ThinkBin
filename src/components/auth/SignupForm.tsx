@@ -42,9 +42,9 @@ export function SignUpForm({
     register,
     handleSubmit,
     reset,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<Inputs>({
-    mode: "onChange",
+    mode: "onBlur",
     resolver: zodResolver(signUpSchema),
   });
 
@@ -127,7 +127,7 @@ export function SignUpForm({
                 <Password register={register} errors={errors} />
               </Field>
               <Field>
-                <Button type="submit" disabled={!isValid || loading}>
+                <Button type="submit" disabled={loading}>
                   {loading ? (
                     <>
                       <Loader2 className="size-7 animate-spin" />
