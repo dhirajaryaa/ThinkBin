@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,28 +22,56 @@ import Password from "./Password";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signUpSchema } from "@/schema/auth.schema";
+import { useState } from "react";
+import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
+import { ApiResponse } from "@/lib/api-response";
 
-type Inputs = {
+interface Inputs {
   name: string;
   email: string;
   password: string;
-};
+}
 
 export function SignUpForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const [loading, setLoading] = useState(false);
   const {
     register,
     handleSubmit,
-    formState: { errors,isValid },
+    reset,
+    formState: { errors, isValid },
   } = useForm<Inputs>({
-    mode:"onChange",
-    resolver: zodResolver(signUpSchema)
+    mode: "onChange",
+    resolver: zodResolver(signUpSchema),
   });
-  
+
   // form submit
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<Inputs> = async (userInput) => {
+    try {
+      setLoading(true);
+      const res = await fetch("/api/auth/signup", {
+        method: "POST",
+        body: JSON.stringify(userInput),
+      });
+      const data: ApiResponse = await res.json();
+      // api error handling
+      if (!res.ok || !data.success) {
+        toast.error(data.message || "Signup failed");
+        return; 
+      }
+      // ✅ Success
+      toast.success(data.message || "Signup successful");
+      reset();
+    } catch (error: any) {
+      toast.error(error.message || "Something went wrong!");
+      console.error("Signup Error:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -75,23 +103,39 @@ export function SignUpForm({
                   aria-invalid={errors.name ? "true" : "false"}
                   placeholder="dhiraj arya"
                 />
-                {errors.name && <p className="text-destructive text-xs">{errors.name.message}</p>}
+                {errors.name && (
+                  <p className="text-destructive text-xs">
+                    {errors.name.message}
+                  </p>
+                )}
               </Field>
               <Field>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
-                 <Input
+                <Input
                   {...register("email", { required: "Email is required" })}
                   aria-invalid={errors.email ? "true" : "false"}
                   placeholder="m@example.com"
                 />
-                {errors.email && <p className="text-destructive text-xs">{errors.email.message}</p>}
+                {errors.email && (
+                  <p className="text-destructive text-xs">
+                    {errors.email.message}
+                  </p>
+                )}
               </Field>
               <Field>
                 <FieldLabel htmlFor="password">Password</FieldLabel>
-                <Password register={register} errors={errors}/>
+                <Password register={register} errors={errors} />
               </Field>
               <Field>
-                <Button type="submit" disabled={!isValid}>Signup</Button>
+                <Button type="submit" disabled={!isValid || loading}>
+                  {loading ? (
+                    <>
+                      <Loader2 className="size-7 animate-spin" />
+                    </>
+                  ) : (
+                    <>Signup</>
+                  )}
+                </Button>
                 <FieldDescription className="text-center">
                   already have an account? <Link href="/login">Login</Link>
                 </FieldDescription>

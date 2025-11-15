@@ -1,8 +1,8 @@
+import z from "zod";
 import { errorResponse, successWithCookiesResponse } from "@/lib/api-response";
 import { prisma } from "@/lib/prisma";
 import { signUpSchema } from "@/schema/auth.schema";
-import z from "zod";
-import argon2, { argon2id } from "argon2";  // password hashing [alternative on jsonwebtoken]
+import argon2, { argon2id } from "argon2";  // password hashing [alternative on bcrypt]
 import { signAccessAndRefreshToken } from "@/lib/jwt";
 
 //type
@@ -13,6 +13,7 @@ interface Body {
 }
 
 export async function POST(request: Request) {
+     return errorResponse("user already exist!", 400);
     const body: Body = await request.json();
     // 1. check user input is valid
     const checkUserInput = signUpSchema.safeParse(body);
