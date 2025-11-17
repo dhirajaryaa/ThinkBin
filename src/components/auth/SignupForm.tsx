@@ -24,8 +24,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { signUpSchema } from "@/schema/auth.schema";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
-import { toast } from "sonner";
-import { ApiResponse } from "@/lib/api-response";
 
 interface Inputs {
   name: string;
@@ -50,27 +48,8 @@ export function SignUpForm({
 
   // form submit
   const onSubmit: SubmitHandler<Inputs> = async (userInput) => {
-    try {
-      setLoading(true);
-      const res = await fetch("/api/auth/signup", {
-        method: "POST",
-        body: JSON.stringify(userInput),
-      });
-      const data: ApiResponse = await res.json();
-      // api error handling
-      if (!res.ok || !data.success) {
-        toast.error(data.message || "Signup failed");
-        return; 
-      }
-      // ✅ Success
-      toast.success(data.message || "Signup successful");
-      reset();
-    } catch (error: any) {
-      toast.error(error.message || "Something went wrong!");
-      console.error("Signup Error:", error);
-    } finally {
-      setLoading(false);
-    }
+   console.log(userInput);
+   
   };
 
   return (

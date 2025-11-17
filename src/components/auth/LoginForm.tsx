@@ -24,8 +24,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "@/schema/auth.schema";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
-import { toast } from "sonner";
-import { ApiResponse } from "@/lib/api-response";
 
 type Inputs = {
   email: string;
@@ -48,27 +46,8 @@ export function LoginForm({
   });
 
   const onSubmit: SubmitHandler<Inputs> = async (userInput) => {
-    try {
-      setLoading(true);
-      const res = await fetch("/api/auth/login", {
-        method: "POST",
-        body: JSON.stringify(userInput),
-      });
-      const data: ApiResponse = await res.json();
-      // api error handling
-      if (!res.ok || !data.success) {
-        toast.error(data.message || "Login failed");
-        return;
-      }
-      // ✅ Success
-      toast.success(data.message || "Login successful");
-      reset();
-    } catch (error: any) {
-      toast.error(error.message || "Something went wrong!");
-      console.error("Login Error:", error);
-    } finally {
-      setLoading(false);
-    }
+console.log(userInput);
+
   };
 
   return (
@@ -79,6 +58,7 @@ export function LoginForm({
           <CardDescription>Login with your Google account</CardDescription>
         </CardHeader>
         <CardContent>
+          {/* <form  onSubmit={handleSubmit(onSubmit)} > */}
           <form onSubmit={handleSubmit(onSubmit)}>
             <FieldGroup>
               <Field>
