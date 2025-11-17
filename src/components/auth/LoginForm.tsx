@@ -19,11 +19,12 @@ import { Input } from "@/components/ui/input";
 import Google from "@/components/icons/Google";
 import Link from "next/link";
 import Password from "./Password";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "@/schema/auth.schema";
-import { useState } from "react";
 import { Loader2 } from "lucide-react";
+import { loginUser } from "@/actions/auth/loginUser";
+import { useActionState, useEffect } from "react";
 
 type Inputs = {
   email: string;
@@ -34,21 +35,28 @@ export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-  const [loading, setLoading] = useState(false);
   const {
     register,
-    handleSubmit,
-    reset,
+    setError,
     formState: { errors },
   } = useForm<Inputs>({
     mode: "onBlur",
     resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit: SubmitHandler<Inputs> = async (userInput) => {
-console.log(userInput);
+  const [state, userLoginAction, isPending] = useActionState(loginUser, {
+    success: false,
+    error: null,
+  });
 
-  };
+  useEffect(() => {
+    if (state.error) {
+      setError("root", {
+        type: "server",
+        message: state.error,
+      });
+    }
+  }, [state.error, setError]);
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -58,8 +66,7 @@ console.log(userInput);
           <CardDescription>Login with your Google account</CardDescription>
         </CardHeader>
         <CardContent>
-          {/* <form  onSubmit={handleSubmit(onSubmit)} > */}
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form action={userLoginAction}>
             <FieldGroup>
               <Field>
                 <Button
@@ -88,20 +95,17 @@ console.log(userInput);
                 )}
               </Field>
               <Field>
-                <div className="flex items-center">
-                  <FieldLabel htmlFor="password">Password</FieldLabel>
-                  {/* <a
-                    href="#"
-                    className="ml-auto text-sm underline-offset-4 hover:underline"
-                  >
-                    Forgot your password?
-                  </a> */}
-                </div>
+                <FieldLabel htmlFor="password">Password</FieldLabel>
                 <Password register={register} errors={errors} />
               </Field>
               <Field>
-                <Button type="submit" disabled={loading}>
-                  {loading ? (
+                {errors.root && (
+                  <p className="text-destructive text-xs text-center">
+                    {errors.root.message}
+                  </p>
+                )}
+                <Button type="submit" disabled={isPending}>
+                  {isPending ? (
                     <>
                       <Loader2 className="size-7 animate-spin" />
                     </>
