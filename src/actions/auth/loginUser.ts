@@ -22,49 +22,53 @@ export async function loginUser(_prevState: LoginState, formData: FormData): Pro
     if (!validate.success) {
         return { success: false, error: z.prettifyError(validate.error) }
     }
-    const { email, password } = validate.data;
+    try {
+        const { email, password } = validate.data;
 
-    // check user on db
-    const user = await prisma.user.findFirst({
-        where: {
-            email
-        }
-    });
-    if (!user) {
-        return { success: false, error: "user not found!" }
-    };
+        // check user on db
+        const user = await prisma.user.findFirst({
+            where: {
+                email
+            }
+        });
+        if (!user) {
+            return { success: false, error: "user not found!" }
+        };
 
-    // match password 
-    const isPasswordMatching = await argon2.verify(user.password, password);
-    if (!isPasswordMatching) {
-        return { success: false, error: "invalid credential!" }
-    };
+        // match password 
+        const isPasswordMatching = await argon2.verify(user.password, password);
+        if (!isPasswordMatching) {
+            return { success: false, error: "invalid credential!" }
+        };
 
-    // create session 
-    const token = randomBytes(32).toString("hex");
-    const expiredAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
-    const session = await prisma.session.create({
-        data: {
-            id: token,
-            userId: user.id,
-            expiredAt
-        }
-    });
-    if (!session) {
-        return { success: false, error: "Internal Server Error" }
-    };
+        // create session 
+        const token = randomBytes(32).toString("hex");
+        const expiredAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+        const session = await prisma.session.create({
+            data: {
+                id: token,
+                userId: user.id,
+                expiredAt
+            }
+        });
+        if (!session) {
+            return { success: false, error: "Internal Server Error" }
+        };
 
-    const cookieStore = await cookies();
+        const cookieStore = await cookies();
 
-    // set cookies 
-    cookieStore.set("thinkbin_user_session", session.id, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production" ? true : false,
-        path: "/",
-        sameSite: "lax",
-        maxAge: 60 * 60 * 24 * 7
-    });
-
+        // set cookies 
+        cookieStore.set("thinkbin_user_session", session.id, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production" ? true : false,
+            path: "/",
+            sameSite: "lax",
+            maxAge: 60 * 60 * 24 * 7
+        });
+    } catch (error) {
+        console.error(error);
+        return { success: false, error: "something went wrong! try again" };
+    }
     // redirect 
     redirect('/dashboard');
 

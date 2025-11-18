@@ -19,11 +19,12 @@ import { Input } from "@/components/ui/input";
 import Google from "@/components/icons/Google";
 import Link from "next/link";
 import Password from "./Password";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signUpSchema } from "@/schema/auth.schema";
-import { useState } from "react";
 import { Loader2 } from "lucide-react";
+import { useActionState, useEffect } from "react";
+import { signupUser } from "@/actions/auth/signupUser";
 
 interface Inputs {
   name: string;
@@ -35,22 +36,28 @@ export function SignUpForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-  const [loading, setLoading] = useState(false);
   const {
     register,
-    handleSubmit,
-    reset,
+    setError,
     formState: { errors },
   } = useForm<Inputs>({
     mode: "onBlur",
     resolver: zodResolver(signUpSchema),
   });
 
-  // form submit
-  const onSubmit: SubmitHandler<Inputs> = async (userInput) => {
-   console.log(userInput);
-   
-  };
+  const [state, signupUserAction, isPending] = useActionState(signupUser, {
+    success: false,
+    error: null,
+  });
+
+  useEffect(() => {
+    if (state.error) {
+      setError("root", {
+        type: "server",
+        message: state.error,
+      });
+    }
+  }, [state.error, setError]);
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -60,7 +67,7 @@ export function SignUpForm({
           <CardDescription>Signup with your Google account</CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form action={signupUserAction}>
             <FieldGroup>
               <Field>
                 <Button
@@ -106,8 +113,13 @@ export function SignUpForm({
                 <Password register={register} errors={errors} />
               </Field>
               <Field>
-                <Button type="submit" disabled={loading}>
-                  {loading ? (
+                {errors.root && (
+                  <p className="text-destructive text-xs text-center">
+                    {errors.root.message}
+                  </p>
+                )}
+                <Button type="submit" disabled={isPending}>
+                  {isPending ? (
                     <>
                       <Loader2 className="size-7 animate-spin" />
                     </>
