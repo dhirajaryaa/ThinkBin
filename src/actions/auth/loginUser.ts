@@ -1,5 +1,6 @@
 'use server';
 
+import { createSessionWithCookies } from "@/lib/auth/session";
 import { prisma } from "@/lib/prisma";
 import { loginSchema } from "@/schema/auth.schema";
 import argon2 from 'argon2';
@@ -42,29 +43,8 @@ export async function loginUser(_prevState: LoginState, formData: FormData): Pro
         };
 
         // create session 
-        const token = randomBytes(32).toString("hex");
-        const expiredAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
-        const session = await prisma.session.create({
-            data: {
-                id: token,
-                userId: user.id,
-                expiredAt
-            }
-        });
-        if (!session) {
-            return { success: false, error: "Internal Server Error" }
-        };
+        await createSessionWithCookies(user.id)
 
-        const cookieStore = await cookies();
-
-        // set cookies 
-        cookieStore.set("thinkbin_user_session", session.id, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production" ? true : false,
-            path: "/",
-            sameSite: "lax",
-            maxAge: 60 * 60 * 24 * 7
-        });
     } catch (error) {
         console.error(error);
         return { success: false, error: "something went wrong! try again" };

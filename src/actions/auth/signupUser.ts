@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { signUpSchema } from "@/schema/auth.schema";
 import argon2 from 'argon2';
 import { redirect } from "next/navigation";
+import { createSessionWithCookies } from "@/lib/auth/session";
 
 type SignUpState = {
     success: boolean;
@@ -39,16 +40,18 @@ export async function signupUser(_prevState: SignUpState, formData: FormData): P
         const hashedPassword = await argon2.hash(password);
 
         //create user 
-        await prisma.user.create({
+        const createdUser = await prisma.user.create({
             data: {
                 name,
                 email,
                 password: hashedPassword
             }
         });
+
+        await createSessionWithCookies(createdUser.id)
     } catch (error) {
         console.error(error);
         return { success: false, error: "something went wrong! try again" };
     }
-    redirect("/login");
+    redirect("/dashboard");
 }

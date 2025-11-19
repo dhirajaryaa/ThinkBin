@@ -1,18 +1,22 @@
-'use server';
+"use server";
 
+import { SESSION_COOKIE_NAME } from "@/lib/constants";
 import { prisma } from "@/lib/prisma";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
+import { userAgent } from "next/server";
 
 export async function getCurrentUser() {
     try {
-        // read token 
+        const headerList = await headers();
+        const ua = userAgent({ headers: headerList });
+
         const cookieStore = await cookies();
-        const token = cookieStore.get("thinkbin_user_session")?.value;
+        const token = cookieStore.get(SESSION_COOKIE_NAME)?.value;
+
         if (!token) return null;
 
-        // check session with user
         const session = await prisma.session.findUnique({
-            where: { id: token },
+            where: { token },
             include: {
                 user: {
                     select: {
@@ -22,21 +26,33 @@ export async function getCurrentUser() {
                         avatar: true,
                         isVerified: true,
                         notes: true,
-                        createdAt: true
-                    }
-                }
-            }
+                        createdAt: true,
+                    },
+                },
+            },
         });
+
         if (!session) return null;
 
-        // check token expired 
+        //? expiration check
         if (session.expiredAt < new Date()) {
-            await prisma.session.delete({ where: { id: token } });
+            await prisma.session.delete({ where: { token } });
             return null;
-        }
-        // return user 
-        return session.user;
+        };
 
+        // Device fingerprint check (multi-device safe)
+        const browser = ua.browser.name?.split(" ")[0];
+        const os = ua.os.name?.split(" ")[0];
+        const device = ua.device.type ?? "desktop";
+
+        const deviceMatch =
+            session.uaBrowser === browser &&
+            session.uaOS === os &&
+            session.uaDevice === device;
+
+        if (!deviceMatch) return null;
+
+        return session.user;
     } catch (err) {
         console.error("getCurrentUser error:", err);
         return null;

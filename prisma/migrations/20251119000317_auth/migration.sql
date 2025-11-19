@@ -6,12 +6,16 @@ CREATE TYPE "SourceType" AS ENUM ('TEXT', 'URL', 'PDF', 'IMAGE', 'CODE', 'OTHER'
 
 -- CreateTable
 CREATE TABLE "Session" (
-    "id" TEXT NOT NULL,
+    "token" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
+    "ip" TEXT NOT NULL,
+    "uaBrowser" TEXT,
+    "uaOS" TEXT,
+    "uaDevice" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "expiredAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "Session_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Session_pkey" PRIMARY KEY ("token")
 );
 
 -- CreateTable
@@ -64,6 +68,9 @@ CREATE TABLE "NoteTag" (
 
 -- CreateIndex
 CREATE INDEX "Session_userId_idx" ON "Session"("userId");
+
+-- CreateIndex
+CREATE INDEX "Session_token_idx" ON "Session"("token");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
