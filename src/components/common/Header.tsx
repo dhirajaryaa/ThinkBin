@@ -4,7 +4,7 @@ import Link from "next/link";
 
 function Header() {
   return (
-    <header className="sticky top-0 z-50 flex items-center justify-between bg-gradient-to-b from-background via-background to-background/20 p-8 sm:px-12 hover:cursor-pointer">
+    <header className="sticky top-0 z-50 flex items-center justify-between bg-linear-to-b from-background via-background to-background/20 p-8 sm:px-12 hover:cursor-pointer">
       <nav className="flex items-center justify-between w-full">
         <Logo />
         <div className="space-x-8 sm:block hidden">
@@ -21,17 +21,16 @@ function Header() {
             About
           </Link>
           <Link
-            href={"#pricing"}
+            href={"/#pricing"}
             className="text-base font-normal hover:underline"
           >
             Pricing
           </Link>
         </div>
         <div className="space-x-4">
-        <Button asChild>
-          <Link href={"/signin"}> SignIn
-          </Link>
-        </Button>
+          <Button asChild>
+            <Link href={"/login"}> Login</Link>
+          </Button>
         </div>
       </nav>
     </header>
