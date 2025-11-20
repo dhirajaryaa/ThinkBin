@@ -8,7 +8,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <main className="w-full min-h-screen">
+      <main className="w-full min-h-screen max-w-6xl mx-auto">
         <Suspense fallback={<Loading />}>
           <ProtectedRoutes>{children}</ProtectedRoutes>
         </Suspense>
