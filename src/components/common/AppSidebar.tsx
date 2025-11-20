@@ -1,12 +1,11 @@
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarHeader,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import Logo from "./Logo";
-import SidebarNavLinks from "./SidebarLinks";
+import {SidebarNavLinks, UserProfileMenu} from "./SidebarLinks";
 
 export function AppSidebar() {
   return (
@@ -21,7 +20,8 @@ export function AppSidebar() {
         {/* nav links  */}
         <SidebarNavLinks />
       </SidebarContent>
-      <SidebarFooter />
+      {/* user profile  */}
+      <UserProfileMenu />
     </Sidebar>
   );
 }

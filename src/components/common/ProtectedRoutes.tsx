@@ -9,7 +9,5 @@ export default async function ProtectedRoutes({
   const user = await getCurrentUser();
   if (!user) redirect("/login");
 
-  return <>
-  <h1>Protected Routes   = {user.name}</h1>
-  {children}</>;
+  return <>{children}</>;
 }

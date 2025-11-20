@@ -4,14 +4,16 @@ import { Button } from "@/components/ui/button";
 import { Loader2, LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { useActionState, useState } from "react";
+import { useState } from "react";
 
 export default function Logout({
   className,
   variant = "default",
+  size = "sm",
 }: {
   className?: string;
-  variant?: string;
+  variant?: "default" | "outline" | "ghost" | "link";
+  size?: "sm" | "lg";
 }) {
   const [isPending, setIsPending] = useState(false);
   const router = useRouter();
@@ -32,9 +34,10 @@ export default function Logout({
   return (
     <Button
       type="button"
+      size={size}
       onClick={logoutHandler}
       disabled={isPending}
-      value={variant}
+      variant={variant}
       className={className}
     >
       {isPending ? <Loader2 className="animate-spin size-6" /> : <LogOut />}
