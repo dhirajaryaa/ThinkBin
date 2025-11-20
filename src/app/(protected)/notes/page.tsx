@@ -1,9 +1,13 @@
+import { DashboardHeader } from "@/components/common/Header";
+import { ScrollArea } from "@/components/ui/scroll-area";
+
 export default function NotesPage() {
     return (
-        <section className="w-full min-h-svh">
-            <div className="flex w-full max-w-sm flex-col gap-6">
-                <h1 className="text-2xl font-bold">Notes</h1>
-            </div>
-        </section>
+        <section className="w-full min-h-svh p-4 sm:px-6">
+             <DashboardHeader title="Your Knowable vault" />
+             <ScrollArea className="w-full h-[90vh] overflow-auto pt-4">
+               
+             </ScrollArea>
+           </section>
     );
 }

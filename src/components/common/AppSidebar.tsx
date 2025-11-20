@@ -13,7 +13,7 @@ export function AppSidebar() {
       <SidebarHeader className="mt-4 mb-12 px-4">
         <div className="w-full flex items-center justify-between pl-4">
           <Logo href="/dashboard" variant="sm" />
-          <SidebarTrigger />
+          <SidebarTrigger className="md:hidden"/>
         </div>
       </SidebarHeader>
       <SidebarContent>

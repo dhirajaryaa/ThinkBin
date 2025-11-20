@@ -40,7 +40,7 @@ const sidebarUserMenuLinks = [
   { title: "Devices", href: "/profile#devices", icon: TabletSmartphone },
 ];
 
-// nav links
+//! nav links
 export function SidebarNavLinks() {
   const pathname = usePathname();
 
@@ -51,7 +51,7 @@ export function SidebarNavLinks() {
           {sidebarMenuLinks.map((link) => (
             <SidebarMenuButton
               key={link.title}
-              isActive={pathname.includes(link.href)}
+              isActive={pathname === link.href}
               className={`px-2 sm:px-4 sm:py-5 rounded-lg sm:rounded-xl data-[active=true]:bg-primary/5`}
               asChild
             >
@@ -70,7 +70,7 @@ export function SidebarNavLinks() {
     </SidebarGroup>
   );
 }
-// user profile link
+//! user profile link
 export function UserProfileMenu() {
   return (
     <SidebarFooter>
