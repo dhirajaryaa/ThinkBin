@@ -12,7 +12,19 @@ interface InputProps {
 }
 
 export default function Editor({ editorRef }: InputProps) {
-  const editor: BlockNoteEditor = useCreateBlockNote();
+  const editor: BlockNoteEditor = useCreateBlockNote({
+placeholders: {
+  default: "Start brainstorming... or use '/' for actions",
+  heading: "Name your idea...",
+  bulletListItem: "Add a thought...",
+  numberedListItem: "Add a step...",
+  checkListItem: "Add an action...",
+  new_comment: "Share your feedback...",
+  edit_comment: "Refine your thought...",
+  comment_reply: "Add your perspective...",
+}
+
+  });
   // set editor ref
   useEffect(() => {
     if (editorRef) editorRef.current = editor;
