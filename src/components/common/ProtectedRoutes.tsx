@@ -6,8 +6,8 @@ export default async function ProtectedRoutes({
 }: {
   children: React.ReactNode;
 }) {
-  const user = await getCurrentUser();
-  if (!user) redirect("/login");
+  // const user = await getCurrentUser();
+  // if (!user) redirect("/login");
 
   return <>{children}</>;
 }

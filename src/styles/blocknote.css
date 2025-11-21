@@ -8,6 +8,9 @@
 .bn-editor strong {
   font-weight: 700;
 }
+.bn-editor .bn-inline-content::before{
+  font-weight: 400;
+}
 .bn-editor h1 {
   font-size: 1.875rem;
 }
