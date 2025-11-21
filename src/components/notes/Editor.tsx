@@ -35,7 +35,7 @@ placeholders: {
       editor={editor}
       theme={"light"}
       id="thinkbin-editor"
-      className="min-h-full w-full h-[50vh]"
+      className="min-h-[50vh] w-full"
     />
   );
 }

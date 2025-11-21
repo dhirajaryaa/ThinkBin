@@ -1,17 +1,12 @@
 "use client";
 
 import React, {
-  ChangeEvent,
-  ChangeEventHandler,
-  HtmlHTMLAttributes,
   useRef,
   useState,
 } from "react";
 import dynamic from "next/dynamic";
 import { BlockNoteEditor } from "@blocknote/core";
 import EditorSkeleton from "@/components/notes/EditorSkeleton";
-import { Input } from "../ui/input";
-import { string } from "zod";
 import { Badge } from "../ui/badge";
 // editor dynamic import
 export const Editor = dynamic(() => import("@/components/notes/Editor"), {
@@ -50,37 +45,36 @@ function EditorWrapper() {
   };
 
   return (
-    <div className="container mx-auto max-w-4xl w-full">
-      <form
-        id="note-form"
-        onSubmit={handleSubmit}
-        className="container mx-auto max-w-4xl h-full px-8 w-full space-y-4"
-      >
-        {/* title  */}
-        <input
-          name="title"
-          aria-label="title"
-          className="font-bold text-4xl w-full placeholder:text-muted-foreground/80 focus:outline-none"
-          placeholder="Untitled Note"
-        />
-        {/* tag  */}
-        <div className="flex items-center gap-2 flex-wrap ring-foreground/10">
-          {tags.map((tag, index) => (
-            <Badge key={index} variant={"secondary"}>
-              #{tag}
-            </Badge>
-          ))}
+    <>
+      <div className="mx-auto max-w-4xl w-full">
+        <form id="note-form" onSubmit={handleSubmit} className="px-8 space-y-4">
+          {/* title  */}
           <input
-            aria-label="add tag"
-            placeholder="Add a tag here..."
-            className="inline focus:outline-0 text-sm"
-            onKeyUp={tagInputHandler}
+            name="title"
+            aria-label="title"
+            className="font-bold text-4xl w-full placeholder:text-muted-foreground/80 focus:outline-none"
+            placeholder="Untitled Note"
           />
-        </div>
-        {/* body  */}
-        <Editor editorRef={editorRef} />
-      </form>
-    </div>
+          {/* tag  */}
+          <div className="flex items-center gap-2 flex-wrap ring-foreground/10">
+            {tags.map((tag, index) => (
+              <Badge key={index} variant={"secondary"}>
+                #{tag}
+              </Badge>
+            ))}
+            <input
+              aria-label="add tag"
+              placeholder="Add a tag here..."
+              className="inline focus:outline-0 text-sm"
+              onKeyUp={tagInputHandler}
+            />
+          </div>
+          {/* body  */}
+          <Editor editorRef={editorRef} />
+        </form>
+
+      </div>
+    </>
   );
 }
 
