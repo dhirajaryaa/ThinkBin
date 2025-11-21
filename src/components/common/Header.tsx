@@ -57,7 +57,7 @@ export function DashboardHeader({
           orientation="vertical"
           className="mx-2 data-[orientation=vertical]:h-6 md:hidden"
         />
-        <h1 className="text-xl sm:text-2xl font-bold flex-1">{title}</h1>
+        <div className="text-lg md:text-xl font-semibold flex-1">{title}</div>
       </div>
       {children}
     </header>

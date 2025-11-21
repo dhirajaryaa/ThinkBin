@@ -1,11 +1,11 @@
 .bn-editor {
   background-color: var(--color-background);
-  color : var(--color-foreground);
+  color: var(--color-foreground);
   padding: 0 !important;
   margin: 0 !important;
 }
 .bn-editor h1 {
-  font-size: 1.875rem ;
+  font-size: 1.875rem;
 }
 .bn-editor h2 {
   font-size: 1.5rem;

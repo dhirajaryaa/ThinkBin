@@ -36,11 +36,6 @@ function EditorWrapper() {
         />
 
       <Editor editorRef={editorRef} />
-
-      <Button type="submit">
-        <Brain />
-        Save Memory
-      </Button>
     </form>
   );
 }
