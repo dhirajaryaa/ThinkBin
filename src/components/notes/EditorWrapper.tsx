@@ -1,6 +1,6 @@
 "use client";
 
-import { Brain } from "lucide-react";
+import { ArrowLeft, Brain, Save } from "lucide-react";
 import { useRef } from "react";
 import dynamic from "next/dynamic";
 import { BlockNoteEditor } from "@blocknote/core";
@@ -24,10 +24,16 @@ function EditorWrapper() {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="container mx-auto max-w-4xl h-full px-8 w-full"
-    >
+    <div className="container mx-auto max-w-4xl h-full w-full">
+      <Button size={"sm"} className="mb-3" variant={"ghost"}>
+        <ArrowLeft />
+        Back
+        <span className="hidden sm:inline">Back</span>
+      </Button>
+      <form
+        onSubmit={handleSubmit}
+        className="container mx-auto max-w-4xl h-full px-8 w-full"
+      >
         <input
           name="title"
           aria-label="title"
@@ -35,8 +41,9 @@ function EditorWrapper() {
           placeholder="Untitled Note"
         />
 
-      <Editor editorRef={editorRef} />
-    </form>
+        <Editor editorRef={editorRef} />
+      </form>
+    </div>
   );
 }
 
