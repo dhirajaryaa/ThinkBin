@@ -12,6 +12,9 @@
     "prisma:sync": "pnpm dlx prisma format && pnpm dlx prisma validate && pnpm dlx prisma generate && pnpm dlx prisma db push"
   },
   "dependencies": {
+    "@blocknote/core": "^0.42.3",
+    "@blocknote/mantine": "^0.42.3",
+    "@blocknote/react": "^0.42.3",
     "@hookform/resolvers": "^5.2.2",
     "@prisma/client": "^6.19.0",
     "@prisma/extension-accelerate": "^2.0.2",

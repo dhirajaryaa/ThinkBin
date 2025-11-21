@@ -1,10 +1,13 @@
 import { DashboardHeader } from "@/components/common/Header";
+import EditorWrapper from "@/components/notes/EditorWrapper";
 
 export default function CreateNotePage() {
   return (
-    <section className="w-full min-h-svh p-4 sm:px-6 ">
+    <section className="w-full min-h-svh px-4 sm:px-6">
       <DashboardHeader title="Capture Memories" />
-      <div className="w-full h-[90vh] overflow-auto pt-12 "></div>
+      <div className="w-full min-h-[90vh] pt-8">
+        <EditorWrapper />
+      </div>
     </section>
   );
 }

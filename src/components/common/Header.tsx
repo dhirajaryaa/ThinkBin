@@ -50,7 +50,7 @@ export function DashboardHeader({
   title: string;
 }) {
   return (
-    <header className="w-full flex items-center justify-between sticky z-50 bg-background top-0 right-0 left-0">
+    <header className="w-full flex items-center justify-between sticky z-50 bg-background top-0 right-0 left-0 py-4">
       <div className="flex items-center justify-start w-full">
         <SidebarTrigger className="md:hidden" />
         <Separator
