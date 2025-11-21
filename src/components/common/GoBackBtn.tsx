@@ -8,8 +8,8 @@ function GoBackBtn() {
   const router = useRouter();
   return (
     <div className="flex items-center gap-1">
-      <SidebarTrigger />
-      <Button size="sm" variant="outline" onClick={() => router.back()}>
+      <SidebarTrigger variant={"outline"} />
+      <Button size="sm" variant="secondary" onClick={() => router.back()}>
         <ArrowLeft />
         Back
       </Button>

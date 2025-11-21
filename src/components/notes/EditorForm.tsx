@@ -1,40 +1,32 @@
 "use client";
 
-import React, {
-  useRef,
-  useState,
-} from "react";
+import React, { useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { BlockNoteEditor } from "@blocknote/core";
 import EditorSkeleton from "@/components/notes/EditorSkeleton";
-import { Badge } from "../ui/badge";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Save, Sparkle, Sparkles } from "lucide-react";
 // editor dynamic import
 export const Editor = dynamic(() => import("@/components/notes/Editor"), {
   ssr: false,
   loading: () => <EditorSkeleton />,
 });
 
-function EditorWrapper() {
+function EditorForm() {
   const editorRef = useRef<BlockNoteEditor | null>(null);
   const [tags, setTags] = useState<string[]>([]);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     const editor = editorRef.current;
-    const form = e.currentTarget;
 
-    if (!editor || !form) return;
-    // Get form values safely
-    const formData = new FormData(form);
-    const title = formData.get("title");
+    if (!editor) return;
     const body = await editor?.blocksToMarkdownLossy(editor?.document);
-    console.info("TITLE:", title);
     console.info("MARKDOWN:", body.trim());
 
     // Clear form values
     setTags([]);
     editor.removeBlocks(editor.document);
-    form.reset();
   };
 
   const tagInputHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -46,8 +38,8 @@ function EditorWrapper() {
 
   return (
     <>
-      <div className="mx-auto max-w-4xl w-full">
-        <form id="note-form" onSubmit={handleSubmit} className="px-8 space-y-4">
+      <section className="mx-auto max-w-4xl w-full h-full mt-6">
+        <div className="px-8 space-y-4">
           {/* title  */}
           <input
             name="title"
@@ -71,11 +63,19 @@ function EditorWrapper() {
           </div>
           {/* body  */}
           <Editor editorRef={editorRef} />
-        </form>
-
-      </div>
+        </div>
+        <section className="flex items-center z-20 justify-between sticky bottom-2 w-full ">
+          <Button variant="outline">
+            <Sparkles /> AI Suggestions
+          </Button>
+          <Button onClick={handleSubmit}>
+            <Save />
+            Save Note
+          </Button>
+        </section>
+      </section>
     </>
   );
 }
 
-export default EditorWrapper;
+export default EditorForm;
