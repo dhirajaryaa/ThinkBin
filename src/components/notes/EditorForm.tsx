@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { BlockNoteEditor } from "@blocknote/core";
-import EditorSkeleton from "@/components/notes/EditorSkeleton";
+import EditorSkeleton from "@/components/skeletons/EditorSkeleton";
 import { Button } from "@/components/ui/button";
 import { Save, Sparkles } from "lucide-react";
 import { toast } from "sonner";
