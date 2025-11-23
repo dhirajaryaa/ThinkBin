@@ -1,11 +1,11 @@
 "use client";
 
-import { markdownToBlocks, type BlockNoteEditor } from "@blocknote/core";
+import { type BlockNoteEditor } from "@blocknote/core";
 import { BlockNoteView } from "@blocknote/mantine";
 import "@blocknote/mantine/style.css";
 import "@/styles/blocknote.css";
 import { useCreateBlockNote } from "@blocknote/react";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 
 interface InputProps {
   initialValue?: string;

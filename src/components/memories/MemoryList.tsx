@@ -1,4 +1,4 @@
-import { getNotes } from "@/actions/notes/getNotes";
+import { getMemories } from "@/actions/memories/getMemories";
 import {
   Card,
   CardAction,
@@ -10,28 +10,29 @@ import {
 } from "@/components/ui/card";
 import ReactMarkdown from "react-markdown";
 import { toast } from "sonner";
-import { Badge } from "../ui/badge";
-import { Button } from "../ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { ExternalLink } from "lucide-react";
 import Link from "next/link";
+import { Separator } from "@/components/ui/separator";
 
-async function NoteList() {
-  const notes = await getNotes();
+async function MemoryList() {
+  const memories = await getMemories();
 
-  if (notes.error) {
-    toast.error(notes.error);
+  if (memories.error) {
+    toast.error(memories.error);
   }
   return (
     <section className="grid w-full grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-8">
-      {notes.data?.map((note) => (
+      {memories.data?.map((memory) => (
         <Card
-          key={note.id}
-          className="gap-4 bg-muted shadow-sm duration-200 hover:-translate-y-1 border-b-4 border-b-foreground"
+          key={memory.id}
+          className="gap-4 bg-muted shadow-sm duration-200 hover:-translate-y-0.5 hover:shadow-lg border-b-6 border-b-foreground"
         >
           <CardHeader>
-            <CardTitle>{note.title}</CardTitle>
-            <CardDescription className="space-y-2 space-x-2">
-              {note.tags.map((tag) => (
+            <CardTitle className="leading-5">{memory.title}</CardTitle>
+            <CardDescription className="space-y-1 space-x-1.5 w-full line-clamp-1">
+              {memory.tags.map((tag) => (
                 <Badge key={tag.id} variant={"outline"} className="text-xs">
                   #{tag.tag}
                 </Badge>
@@ -39,20 +40,20 @@ async function NoteList() {
             </CardDescription>
             <CardAction>
               <Button size="sm" asChild>
-                <Link href={"/notes/" + note.id + "/view"}>
+                <Link href={"/memories/" + memory.id + "/view"}>
                   <ExternalLink /> View
                 </Link>
               </Button>
             </CardAction>
           </CardHeader>
-          <CardContent>
+          <CardContent className="flex-1">
             <div className="w-full line-clamp-4 text-sm text-foreground/50">
-              <ReactMarkdown>{note.content}</ReactMarkdown>
+              <ReactMarkdown>{memory.content}</ReactMarkdown>
             </div>
           </CardContent>
           <CardFooter className="text-xs">
             <strong className="mr-2">Last Updated: </strong>
-            {new Date(note.updatedAt).toDateString()}
+            {new Date(memory.updatedAt).toDateString()}
           </CardFooter>
         </Card>
       ))}
@@ -60,4 +61,4 @@ async function NoteList() {
   );
 }
 
-export default NoteList;
+export default MemoryList;

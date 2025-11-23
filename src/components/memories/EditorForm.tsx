@@ -8,11 +8,11 @@ import { Button } from "@/components/ui/button";
 import { Loader2, Save, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 import TagSelector from "./TagSelector";
-import { createNote } from "@/actions/notes/createNote";
-import { createNoteSchema } from "@/schema/note.schema";
-import z, { set } from "zod";
+import { createMemory } from "@/actions/memories/createMemory";
+import { createMemorySchema } from "@/schema/memory.schema";
+import z from "zod";
 // editor dynamic import
-export const Editor = dynamic(() => import("@/components/notes/Editor"), {
+export const Editor = dynamic(() => import("@/components/memories/Editor"), {
   ssr: false,
   loading: () => <EditorSkeleton />,
 });
@@ -32,17 +32,15 @@ function EditorForm() {
       ?.blocksToMarkdownLossy(editor?.document)
       .trim();
 
-    const validate = createNoteSchema.safeParse({ title, content, tags });
+  const validate = createMemorySchema.safeParse({ title, content, tags });
     if (!validate.success) {
-      toast.error(z.prettifyError(validate.error) || validate.error.message);
+      toast.error(z.prettifyError(validate.error));
       return;
     }
 
-    const res = await createNote(validate.data);
+    const res = await createMemory(validate.data);
     if (res.success) {
-      toast.success("Note saved successfully!", {
-        description: JSON.stringify(res.data, null, 2),
-      });
+      toast.success("Memory saved successfully!");
     } else {
       toast.error(res.error);
     }
@@ -63,7 +61,7 @@ function EditorForm() {
             name="title"
             aria-label="title"
             className="font-bold text-4xl w-full placeholder:text-muted-foreground/80 focus:outline-none"
-            placeholder="Untitled Note"
+            placeholder="Untitled Memory"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
@@ -81,7 +79,7 @@ function EditorForm() {
           </Button>
           <Button onClick={handleSubmit}>
             {loading ? <Loader2 className="animate-spin size-5" /> : <Save />}
-            Save Note
+            Save Memory
           </Button>
         </section>
       </section>

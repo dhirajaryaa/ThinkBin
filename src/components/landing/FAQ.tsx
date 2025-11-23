@@ -9,11 +9,11 @@ function FAQ() {
   const faqs = [
     {
       q: "What is ThinkBin?",
-      a: "ThinkBin is an AI-powered workspace that turns scattered notes into a connected knowledge graph — so you can search, recall and create faster.",
+      a: "ThinkBin is an AI-powered workspace that turns scattered memories into a connected knowledge graph — so you can search, recall and create faster.",
     },
     {
-      q: "Do I need to tag notes manually?",
-      a: "No. ThinkBin automatically extracts topics from your notes so tags generate themselves.",
+      q: "Do I need to tag memories manually?",
+      a: "No. ThinkBin automatically extracts topics from your memories so tags generate themselves.",
     },
     {
       q: "How does Semantic Search work?",

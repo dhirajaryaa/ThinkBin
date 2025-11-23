@@ -2,7 +2,7 @@ export const PROTECTED_ROUTES = [
   "/dashboard",
   "/ask",
   "/create",
-  "/notes",
+  "/memories",
   "/profile",
   "/settings",
 ];

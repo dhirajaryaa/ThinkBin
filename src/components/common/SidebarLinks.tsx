@@ -31,8 +31,8 @@ import Logout from "../auth/Logout";
 const sidebarMenuLinks = [
   { title: "Dashboard", href: "/dashboard", icon: Grid2X2 },
   { title: "Ask", href: "/ask", icon: Search },
-  { title: "Create", href: "/notes/create", icon: SquarePen },
-  { title: "Notes", href: "/notes", icon: LayoutList },
+  { title: "Create", href: "/memories/create", icon: SquarePen },
+  { title: "Memories", href: "/memories", icon: LayoutList },
 ];
 
 const sidebarUserMenuLinks = [

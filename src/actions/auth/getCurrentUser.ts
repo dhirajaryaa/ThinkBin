@@ -25,7 +25,7 @@ export async function getCurrentUser() {
                         email: true,
                         avatar: true,
                         isVerified: true,
-                        notes: true,
+                        memories: true,
                         createdAt: true,
                     },
                 },

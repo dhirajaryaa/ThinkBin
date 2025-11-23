@@ -19,7 +19,7 @@ export const config = {
     "/dashboard/:path*",
     "/ask/:path*",
     "/create/:path*",
-    "/notes/:path*",
+    "/memories/:path*",
     "/profile/:path*",
     "/settings/:path*",
   ],

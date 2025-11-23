@@ -34,7 +34,7 @@ export default function AboutPage() {
         <p className="text-muted-foreground text-base leading-relaxed">
           Instead of wasting time searching through tabs, you just ask:{" "}
           <em>“Find my Tailwind bug fix from last week”</em>, and ThinkBin instantly
-          finds the exact note with full context.
+          finds the exact memory with full context.
         </p>
       </section>
 
@@ -53,7 +53,7 @@ export default function AboutPage() {
       <section className="mb-10">
         <h2 className="text-2xl font-semibold mb-2">What ThinkBin Can Do</h2>
         <ul className="list-disc pl-5 text-muted-foreground text-base leading-relaxed space-y-2">
-          <li>Capture notes, screenshots, and PDFs in one place</li>
+          <li>Capture memories, screenshots, and PDFs in one place</li>
           <li>Automatically tag topics and detect relationships</li>
           <li>Search your saved knowledge by meaning, not keywords</li>
           <li>Visualize connections through an interactive knowledge graph</li>

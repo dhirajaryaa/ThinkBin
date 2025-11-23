@@ -15,7 +15,7 @@ function Feature() {
     {
       icon: Link,
       title: "Context Linking",
-      text: "See relationships between your notes and ideas — like a living knowledge graph.",
+      text: "See relationships between your memories and ideas — like a living knowledge graph.",
     },
     {
       icon: File,
@@ -40,7 +40,7 @@ function Feature() {
         your knowledge, organized by AI.
       </h2>
       <p className="text-sm sm:text-base font-normal my-4 text-center text-muted-foreground">
-        ThinkBin transforms scattered notes into connected, searchable
+        ThinkBin transforms scattered memories into connected, searchable
         intelligence.
       </p>
 

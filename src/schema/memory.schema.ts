@@ -1,6 +1,6 @@
 import z from "zod";
 
-export const createNoteSchema = z.object({
+export const createMemorySchema = z.object({
     title: z.string().optional(),
     tags: z.array(z.string({ error: "Tag is required" })).optional(),
     content: z.string({ error: "Content is required" })

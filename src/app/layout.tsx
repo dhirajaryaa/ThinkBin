@@ -10,11 +10,12 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "ThinkBin — Your AI-Powered Second Brain",
   description:
-    "ThinkBin helps you store, organize, and rediscover everything you learn — from code snippets to YouTube notes. Powered by AI, embeddings, and semantic search.",
+    "ThinkBin helps you store, organize, and rediscover everything you learn — from code snippets to YouTube memories. Powered by AI, embeddings, and semantic search.",
   applicationName: "ThinkBin",
   authors: [{ name: "Dhiraj Arya", url: "https://github.com/dhirajaryaa" }],
   keywords: [
     "AI notes app",
+  "AI memories app",
     "Second Brain",
     "Personal Knowledge Management",
     "Semantic Search",

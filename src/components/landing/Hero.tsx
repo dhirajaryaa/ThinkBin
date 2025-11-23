@@ -14,7 +14,7 @@ function Hero() {
           your second brain for everything you learn.
         </h1>
         <p className="text-sm sm:text-lg font-normal text-muted-foreground mt-4 sm:mt-8 text-center w-full capitalize">
-          collect notes, screenshots, and docs — ThinkBin makes them searchable,
+          collect memories, screenshots, and docs — ThinkBin makes them searchable,
           connected, and alive.
         </p>
         <div className="my-8 sm:my-12 w-full flex gap-4 items-center justify-center">

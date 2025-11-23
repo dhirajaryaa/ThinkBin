@@ -1,24 +1,18 @@
 import AppHeader from "@/components/common/AppHeader";
-import NoteList from "@/components/notes/NoteList";
+import MemoryList from "@/components/memories/MemoryList";
 import MemorySkeleton from "@/components/skeletons/memorySkeleton";
-import dynamic from "next/dynamic";
 import { Suspense } from "react";
 
-// const Notes = dynamic(() => import("@/components/notes/NoteList"), {
-//   loading: () => <MemorySkeleton />,
-// });
-
-export default function NotesPage() {
+export default function MemoriesPage() {
   return (
     <>
       <AppHeader className="flex items-center justify-between">
-        <h1 className="text-xl font-bold">All Notes</h1>
+        <h1 className="text-xl font-bold">All Memories</h1>
       </AppHeader>
       <main className="w-full relative">
         <Suspense fallback={<MemorySkeleton />}>
-          <NoteList />
+          <MemoryList />
         </Suspense>
-        {/* <MemorySkeleton /> */}
       </main>
     </>
   );

@@ -39,27 +39,27 @@ model User {
   isVerified Boolean?  @default(true)
   provider   String?   @default("credential")
   createdAt  DateTime  @default(now())
-  notes      Note[]
+  memories   Memory[]
   sessions   Session[]
 
   @@index([email])
 }
 
 // -------------------------
-// NOTES (Raw uploaded notes)
+// MEMORIES (Raw uploaded memories)
 // -------------------------
-model Note {
-  id         String      @id @default(uuid())
-  user       User        @relation(fields: [userId], references: [id])
+model Memory {
+  id         String        @id @default(uuid())
+  user       User          @relation(fields: [userId], references: [id])
   userId     String
   title      String?
-  sourceType SourceType  @default(TEXT)
-  sourceLink String?     @default("#")
+  sourceType SourceType    @default(TEXT)
+  sourceLink String?       @default("#")
   content    String
-  chunks     NoteChunk[]
-  tags       NoteTag[]
-  createdAt  DateTime    @default(now())
-  updatedAt  DateTime    @updatedAt
+  chunks     MemoryChunk[]
+  tags       MemoryTag[]
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
 }
 
 enum SourceType {
@@ -72,13 +72,13 @@ enum SourceType {
 }
 
 // -------------------------
-// NOTE CHUNK (for embeddings)
+// MEMORY CHUNK (for embeddings)
 // -------------------------
 
-model NoteChunk {
+model MemoryChunk {
   id         String                       @id @default(cuid())
-  note       Note                         @relation(fields: [noteId], references: [id])
-  noteId     String
+  memory     Memory                       @relation(fields: [memoryId], references: [id])
+  memoryId   String
   chunkIndex Int
   content    String
   embedding  Unsupported("vector(1536)")?
@@ -86,13 +86,13 @@ model NoteChunk {
 }
 
 // -------------------------
-// NOTE TAG (manual + auto)
+// MEMORY TAG (manual + auto)
 // -------------------------
-model NoteTag {
+model MemoryTag {
   id         String   @id @default(cuid())
-  note       Note     @relation(fields: [noteId], references: [id])
-  noteId     String
+  memory     Memory   @relation(fields: [memoryId], references: [id])
+  memoryId   String
   tag        String
-  confidence Float?   @default(99.9)
+  confidence Float?   @default(1.0)
   createdAt  DateTime @default(now())
 }
