@@ -1,5 +1,12 @@
 import AppHeader from "@/components/common/AppHeader";
+import NoteList from "@/components/notes/NoteList";
 import MemorySkeleton from "@/components/skeletons/memorySkeleton";
+import dynamic from "next/dynamic";
+import { Suspense } from "react";
+
+// const Notes = dynamic(() => import("@/components/notes/NoteList"), {
+//   loading: () => <MemorySkeleton />,
+// });
 
 export default function NotesPage() {
   return (
@@ -8,7 +15,10 @@ export default function NotesPage() {
         <h1 className="text-xl font-bold">All Notes</h1>
       </AppHeader>
       <main className="w-full relative">
-       <MemorySkeleton />
+        <Suspense fallback={<MemorySkeleton />}>
+          <NoteList />
+        </Suspense>
+        {/* <MemorySkeleton /> */}
       </main>
     </>
   );

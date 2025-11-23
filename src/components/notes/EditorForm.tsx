@@ -5,12 +5,12 @@ import dynamic from "next/dynamic";
 import { BlockNoteEditor } from "@blocknote/core";
 import EditorSkeleton from "@/components/skeletons/EditorSkeleton";
 import { Button } from "@/components/ui/button";
-import { Save, Sparkles } from "lucide-react";
+import { Loader2, Save, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 import TagSelector from "./TagSelector";
 import { createNote } from "@/actions/notes/createNote";
 import { createNoteSchema } from "@/schema/note.schema";
-import z from "zod";
+import z, { set } from "zod";
 // editor dynamic import
 export const Editor = dynamic(() => import("@/components/notes/Editor"), {
   ssr: false,
@@ -18,11 +18,13 @@ export const Editor = dynamic(() => import("@/components/notes/Editor"), {
 });
 
 function EditorForm() {
+  const [loading, setLoading] = useState(false);
   const editorRef = useRef<BlockNoteEditor | null>(null);
   const [title, setTitle] = useState<string>("");
   const [tags, setTags] = useState<string[]>([]);
 
   const handleSubmit = async () => {
+    setLoading(true);
     const editor = editorRef.current;
 
     if (!editor) return;
@@ -49,6 +51,7 @@ function EditorForm() {
     setTags([]);
     setTitle("");
     editor.removeBlocks(editor.document);
+    setLoading(false);
   };
 
   return (
@@ -72,12 +75,12 @@ function EditorForm() {
         <section className="flex items-center z-20 justify-between sticky bottom-2 w-full ">
           <Button
             variant="outline"
-            onClick={() => toast.info("AI suggestions coming soon ✨")}
+            onClick={() => toast.info("AI suggestions coming soon ✨",{closeButton:true})}
           >
             <Sparkles /> AI Suggestions
           </Button>
           <Button onClick={handleSubmit}>
-            <Save />
+            {loading ? <Loader2 className="animate-spin size-5" /> : <Save />}
             Save Note
           </Button>
         </section>
