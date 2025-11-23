@@ -1,14 +1,16 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { BlockNoteEditor } from "@blocknote/core";
 import EditorSkeleton from "@/components/notes/EditorSkeleton";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Save, Sparkle, Sparkles } from "lucide-react";
+import { Save, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 import TagSelector from "./TagSelector";
+import { createNote } from "@/actions/notes/createNote";
+import { createNoteSchema } from "@/schema/note.schema";
+import z from "zod";
 // editor dynamic import
 export const Editor = dynamic(() => import("@/components/notes/Editor"), {
   ssr: false,
@@ -24,15 +26,26 @@ function EditorForm() {
     const editor = editorRef.current;
 
     if (!editor) return;
-    const body = await editor?.blocksToMarkdownLossy(editor?.document);
+    const content = await editor
+      ?.blocksToMarkdownLossy(editor?.document)
+      .trim();
 
-    console.info("Title:", title);
-    console.info("Tags:", tags);
-    console.info("MARKDOWN:", body.replace(/\n+/g, "\n").trim());
+    const validate = createNoteSchema.safeParse({ title, content, tags });
+    if (!validate.success) {
+      toast.error(z.prettifyError(validate.error) || validate.error.message);
+      return;
+    }
 
-    toast.success("Note saved successfully!");
+    const res = await createNote(validate.data);
+    if (res.success) {
+      toast.success("Note saved successfully!", {
+        description: JSON.stringify(res.data, null, 2),
+      });
+    } else {
+      toast.error(res.error);
+    }
 
-    // Clear form values
+    //?  Clear form values
     setTags([]);
     setTitle("");
     editor.removeBlocks(editor.document);
