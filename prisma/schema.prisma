@@ -1,11 +1,11 @@
 generator client {
-  provider        = "prisma-client-js"
+  provider        = "prisma-client"
+  output          = "../src/generated/prisma"
   previewFeatures = ["postgresqlExtensions"]
 }
 
 datasource db {
   provider   = "postgresql"
-  url        = env("DATABASE_URL")
   extensions = [vector]
 }
 
@@ -53,10 +53,12 @@ model Note {
   user       User        @relation(fields: [userId], references: [id])
   userId     String
   sourceType SourceType  @default(TEXT)
-  sourceLink String      @default("#")
+  sourceLink String?     @default("#")
+  content    String
   chunks     NoteChunk[]
   tags       NoteTag[]
   createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
 }
 
 enum SourceType {

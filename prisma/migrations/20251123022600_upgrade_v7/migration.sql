@@ -37,8 +37,10 @@ CREATE TABLE "Note" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "sourceType" "SourceType" NOT NULL DEFAULT 'TEXT',
-    "sourceLink" TEXT NOT NULL DEFAULT '#',
+    "sourceLink" TEXT DEFAULT '#',
+    "content" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Note_pkey" PRIMARY KEY ("id")
 );

@@ -1,14 +1,16 @@
-import { defineConfig } from "prisma/config";
-import dotenv from "dotenv";
-dotenv.config({ path: ".env.local" });
+import { defineConfig, env } from "prisma/config";
+import { configDotenv } from 'dotenv';
+
+configDotenv({
+  path: "./.env.local"
+});
 
 export default defineConfig({
   schema: "prisma/schema.prisma",
   migrations: {
     path: "prisma/migrations",
   },
-  engine: "classic",
   datasource: {
-    url: process.env.DATABASE_URL!
+    url: env("TB_DATABASE_URL"),
   },
 });
