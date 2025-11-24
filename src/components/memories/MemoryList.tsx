@@ -14,7 +14,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ExternalLink } from "lucide-react";
 import Link from "next/link";
-import { Separator } from "@/components/ui/separator";
 
 async function MemoryList() {
   const memories = await getMemories();
@@ -23,7 +22,7 @@ async function MemoryList() {
     toast.error(memories.error);
   }
   return (
-    <section className="grid w-full grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-8">
+    <section className="grid w-full grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-8">
       {memories.data?.map((memory) => (
         <Card
           key={memory.id}
