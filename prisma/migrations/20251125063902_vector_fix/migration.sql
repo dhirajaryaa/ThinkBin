@@ -33,39 +33,40 @@ CREATE TABLE "User" (
 );
 
 -- CreateTable
-CREATE TABLE "Note" (
+CREATE TABLE "Memory" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
+    "title" TEXT,
     "sourceType" "SourceType" NOT NULL DEFAULT 'TEXT',
     "sourceLink" TEXT DEFAULT '#',
     "content" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "Note_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Memory_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "NoteChunk" (
+CREATE TABLE "MemoryChunk" (
     "id" TEXT NOT NULL,
-    "noteId" TEXT NOT NULL,
+    "memoryId" TEXT NOT NULL,
     "chunkIndex" INTEGER NOT NULL,
     "content" TEXT NOT NULL,
-    "embedding" vector(1536),
+    "embedding" vector(1536) NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT "NoteChunk_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "MemoryChunk_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "NoteTag" (
+CREATE TABLE "MemoryTag" (
     "id" TEXT NOT NULL,
-    "noteId" TEXT NOT NULL,
+    "memoryId" TEXT NOT NULL,
     "tag" TEXT NOT NULL,
-    "confidence" DOUBLE PRECISION DEFAULT 99.9,
+    "confidence" DOUBLE PRECISION DEFAULT 1.0,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT "NoteTag_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "MemoryTag_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -84,10 +85,10 @@ CREATE INDEX "User_email_idx" ON "User"("email");
 ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Note" ADD CONSTRAINT "Note_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Memory" ADD CONSTRAINT "Memory_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "NoteChunk" ADD CONSTRAINT "NoteChunk_noteId_fkey" FOREIGN KEY ("noteId") REFERENCES "Note"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "MemoryChunk" ADD CONSTRAINT "MemoryChunk_memoryId_fkey" FOREIGN KEY ("memoryId") REFERENCES "Memory"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "NoteTag" ADD CONSTRAINT "NoteTag_noteId_fkey" FOREIGN KEY ("noteId") REFERENCES "Note"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "MemoryTag" ADD CONSTRAINT "MemoryTag_memoryId_fkey" FOREIGN KEY ("memoryId") REFERENCES "Memory"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

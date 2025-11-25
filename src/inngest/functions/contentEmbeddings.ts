@@ -24,9 +24,19 @@ export const contentEmbedding = inngestClient.createFunction(
         })
         // step 4. - save embedding with chunkIndex
         await step.run("save-embedding", async () => {
-            if (!vectors) return { status: "failed", message: "embedding failed" };
+            if (!vectors) return { status: "failed" };
             // db save embedding
+            await Promise.all(
+                vectors.map(async (vector, index) => {
+                    const embeddingStr = `[${vector.values?.join(',')}]`;
+                    await prisma.$executeRawUnsafe(`
+        INSERT INTO "MemoryChunk" ("id","memoryId", "chunkIndex", "content", "embedding")
+        VALUES (gen_random_uuid(),'${memoryId}', ${index}, '${chunks[index]}', '${embeddingStr}')
+      `);
+                })
+            );
+            return "success";
         })
-        return { status: "success", message: "content embedding done" }
+        return { status: "success" }
     }
 );

@@ -76,13 +76,13 @@ enum SourceType {
 // -------------------------
 
 model MemoryChunk {
-  id         String                       @id @default(cuid())
-  memory     Memory                       @relation(fields: [memoryId], references: [id])
+  id         String                      @id @default(cuid())
+  memory     Memory                      @relation(fields: [memoryId], references: [id])
   memoryId   String
   chunkIndex Int
   content    String
-  embedding  Unsupported("vector(1536)")?
-  createdAt  DateTime                     @default(now())
+  embedding  Unsupported("vector(1536)")
+  createdAt  DateTime                    @default(now())
 }
 
 // -------------------------
