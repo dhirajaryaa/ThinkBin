@@ -1,8 +1,8 @@
 import { inngestClient } from "@/inngest/client";
-import { generateEmbedding } from "@/lib/ai/generateEmbedding";
+import { generateAndSaveEmbedding } from "@/lib/ai/embedding/saveEmbedding";
 import { textSplitter } from "@/lib/ai/textSplitter";
 import { prisma } from "@/lib/prisma";
-import { NonRetriableError, RetryAfterError, StepError } from "inngest";
+import { NonRetriableError, StepError } from "inngest";
 
 export const contentEmbedding = inngestClient.createFunction(
     { id: "content-embedding" },
@@ -14,7 +14,7 @@ export const contentEmbedding = inngestClient.createFunction(
         const content = await step.run("get-content-from-db", async () => {
             const doc = await prisma.memory.findUnique({ where: { id: memoryId } });
             if (!doc) {
-                throw new StepError("get-content-from-db", "Memory not found");
+                 throw new NonRetriableError("Memory not found")
             };
             return doc
         });
@@ -23,29 +23,12 @@ export const contentEmbedding = inngestClient.createFunction(
             const mdData = `title:${content?.title};content${content?.content}`
             return await textSplitter(mdData, { chunkSize: 500, chunkOverlap: 100 });
         })
-        // step 3. - generate embedding
-        const vectors = await step.run("generate-embedding", async () => {
+        // step 3. - generate and save embedding
+        await step.run("generate-and-save-embedding", async () => {
             if (!chunks) {
                 throw new NonRetriableError("Chunks not found")
             };
-            return await generateEmbedding(chunks);
-        })
-        // step 4. - save embedding with chunkIndex
-        await step.run("save-embedding", async () => {
-            if (!vectors) {
-                throw new NonRetriableError("Vectors not found")
-            }
-            // db save embedding
-            await Promise.all(
-                vectors.map(async (vector, index) => {
-                    const embeddingStr = `[${vector.values?.join(',')}]`;
-                    await prisma.$executeRawUnsafe(`
-        INSERT INTO "MemoryChunk" ("id","memoryId", "chunkIndex", "content", "embedding")
-        VALUES (gen_random_uuid(),'${memoryId}', ${index}, '${chunks[index]}', '${embeddingStr}')
-      `);
-                })
-            );
-            return { status: "success" };
+            return await generateAndSaveEmbedding(chunks,memoryId,content?.userId,content?.sourceType);
         })
         return { status: "success" }
     }
