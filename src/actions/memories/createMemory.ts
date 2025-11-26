@@ -1,6 +1,7 @@
 "use server";
 
 import type { Memory } from "@/generated/prisma/client";
+import { inngestClient } from "@/inngest/client";
 import { SESSION_COOKIE_NAME } from "@/lib/constants";
 import { prisma } from "@/lib/prisma";
 import { createMemorySchema } from "@/schema/memory.schema";
@@ -61,6 +62,14 @@ export async function createMemory(userInput: UserInput): Promise<MemoryResponse
             error: "Internal Server Error! Please try again."
         }
     };
+
+    // run inngest embedding fn.
+    await inngestClient.send({
+        name: "tb/content.embedded",
+        data: {
+            id: newMemory.id
+        }
+    });
 
     return {
         success: true,
