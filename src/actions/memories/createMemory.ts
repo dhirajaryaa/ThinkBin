@@ -52,7 +52,8 @@ export async function createMemory(userInput: UserInput): Promise<MemoryResponse
             data: userInput.tags?.map((tag) => ({
                 memoryId: memory.id,
                 tag
-            })) ?? []
+            })) ?? [],
+            skipDuplicates: true
         });
         return memory
     });
