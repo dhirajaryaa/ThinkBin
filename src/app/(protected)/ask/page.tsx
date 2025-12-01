@@ -8,14 +8,10 @@ export default function DashboardPage() {
       <AppHeader>
         <h1 className="text-xl font-bold">Ask Memories</h1>
       </AppHeader>
-      <main className="w-full relative max-w-4xl mx-auto">
+      <main className="w-full relative max-w-4xl mx-auto h-[89vh]">
         <section className="w-full h-full py-8 space-y-8">
-          <ChatCallout
-            message="who are you? and what task you want to perform"
-          />
-          <ChatCallout
-            message="who are you? and what task you want to perform"
-          />
+          <ChatCallout message="who are you? and what task you want to perform" />
+          <ChatCallout message="who are you? and what task you want to perform" />
         </section>
 
         <UserInput />
