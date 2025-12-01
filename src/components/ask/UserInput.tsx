@@ -1,3 +1,4 @@
+"use client";
 import { useForm } from "react-hook-form";
 import { Button } from "../ui/button";
 import { Loader2, Send } from "lucide-react";
