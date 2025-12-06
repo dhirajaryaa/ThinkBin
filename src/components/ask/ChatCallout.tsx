@@ -1,3 +1,5 @@
+import ReactMarkdown from "react-markdown";
+
 export const ChatCallout = ({ message }: { message: string }) => {
   return (
     <div className={`w-full`}>
@@ -6,4 +8,8 @@ export const ChatCallout = ({ message }: { message: string }) => {
       </p>
     </div>
   );
+};
+
+export const AIChatCallout = ({ message }: { message: string }) => {
+  return <ReactMarkdown >{message}</ReactMarkdown>;
 };

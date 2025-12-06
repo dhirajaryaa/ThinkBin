@@ -12,7 +12,13 @@ interface Input {
   query: string;
 }
 
-function UserInput() {
+function UserInput({
+  llmAnswer,
+  setLlmAnswer,
+}: {
+  llmAnswer: string;
+  setLlmAnswer: React.Dispatch<React.SetStateAction<string>>;
+}) {
   const {
     register,
     formState: { errors },
@@ -29,13 +35,20 @@ function UserInput() {
     toast.error(state.error);
   }
 
+  if (state.data) {
+    setLlmAnswer(state.data);
+  }
+
   return (
-    <form action={askQuestionAction}>
-      <section className="flex items-center gap-4 sticky bottom-0 rounded-xl px-2 py-1 bg-muted shadow  ">
+    <form
+      action={askQuestionAction}
+      className="flex flex-col gap-2 absolute  bottom-3 left-0 right-0 mx-auto py-4 w-full bg-background z-20"
+    >
+      <section className="flex items-center gap-4 rounded-xl px-2 py-1 bg-muted shadow  ">
         <input
           {...register("query")}
           placeholder="Ask a question"
-          className="w-full h-ful p-2 outline-0"
+          className="w-full h-full p-2 outline-0"
           aria-invalid={errors.query ? "true" : "false"}
         />
         <Button variant="default" size={"sm"}>
