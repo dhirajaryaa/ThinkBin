@@ -1,19 +1,18 @@
 "use server";
 
 import { llmService } from "@/lib/ai/generation/llmService";
+import { userPrompt } from "@/prompts/user";
 import { askQuestionSchema } from "@/schema/ask.schema";
 import { GoogleGenerativeAIEmbeddings } from "@langchain/google-genai";
 import { QdrantVectorStore } from "@langchain/qdrant";
-import z, { json } from "zod";
 
 interface QuestionState {
     success: boolean;
     error?: string | null;
-    data?: string | null;
+    data?: string;
 }
 
-export async function askQuestion(_prevState: QuestionState, formData: FormData): Promise<QuestionState> {
-    const query = formData.get("query")?.toString() as string;
+export async function askQuestion(query: string): Promise<QuestionState> {
     // validate input 
     const validate = askQuestionSchema.safeParse({ query });
     if (!validate.success) {
@@ -30,8 +29,12 @@ export async function askQuestion(_prevState: QuestionState, formData: FormData)
         collectionName: "tb-memories",
     });
     const documents = await vectorStore.similaritySearch(query, 4);
+
     // llm call
-    const llmAnswer = await llmService(query, documents);
+    const context = documents.map((doc) => doc.pageContent).join("\n\n");
+    const prompt = userPrompt.replace("{{user_question}}", query).replace("{{retrieved_context}}", context);
+
+    const llmAnswer = await llmService(prompt);
 
     if (!llmAnswer) {
         return { success: false, error: "something went wrong!" }

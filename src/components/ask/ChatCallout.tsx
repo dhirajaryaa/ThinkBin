@@ -1,4 +1,7 @@
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import "@blocknote/mantine/style.css";
+import "@/styles/blocknote.css";
 
 export const ChatCallout = ({ message }: { message: string }) => {
   return (
@@ -11,5 +14,9 @@ export const ChatCallout = ({ message }: { message: string }) => {
 };
 
 export const AIChatCallout = ({ message }: { message: string }) => {
-  return <ReactMarkdown >{message}</ReactMarkdown>;
+  return (
+    <div className="markdown-body bn-block">
+      <ReactMarkdown remarkPlugins={[remarkGfm]}>{message}</ReactMarkdown>
+    </div>
+  );
 };

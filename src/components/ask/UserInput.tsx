@@ -5,44 +5,56 @@ import { Loader2, Send } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { askQuestionSchema } from "@/schema/ask.schema";
 import { askQuestion } from "@/actions/ask/askQuestion";
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import { toast } from "sonner";
+import { chatData } from "@/app/(protected)/ask/page";
 
 interface Input {
   query: string;
 }
 
 function UserInput({
-  llmAnswer,
   setLlmAnswer,
 }: {
-  llmAnswer: string;
-  setLlmAnswer: React.Dispatch<React.SetStateAction<string>>;
+  setLlmAnswer: React.Dispatch<React.SetStateAction<chatData[]>>;
 }) {
+  const [loading, setLoading] = useState(false);
+
   const {
     register,
+    handleSubmit,
     formState: { errors },
+    reset
   } = useForm<Input>({
     resolver: zodResolver(askQuestionSchema),
   });
 
-  const [state, askQuestionAction, isPending] = useActionState(askQuestion, {
-    success: false,
-    error: null,
-  });
+  const onSubmit = async (input: Input) => {
+    setLoading(true);
+    setLlmAnswer((prev) => [
+      ...(prev || []),
+      { role: "user", content: input.query },
+    ]);
+    reset();
 
-  if (state.error) {
-    toast.error(state.error);
-  }
+    const res = await askQuestion(input.query);
 
-  if (state.data) {
-    setLlmAnswer(state.data);
-  }
+    if (res.success) {
+      setLlmAnswer((prev) => [
+        ...(prev || []),
+        { role: "assistant", content: res.data as string },
+      ]);
+      setLoading(false);
+    } else {
+      toast.error(res.error);
+      setLoading(false);
+    }
+  };
 
   return (
     <form
-      action={askQuestionAction}
-      className="flex flex-col gap-2 absolute  bottom-3 left-0 right-0 mx-auto py-4 w-full bg-background z-20"
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex flex-col gap-2 mx-auto py-4 w-full bg-background z-20"
     >
       <section className="flex items-center gap-4 rounded-xl px-2 py-1 bg-muted shadow  ">
         <input
@@ -52,7 +64,7 @@ function UserInput({
           aria-invalid={errors.query ? "true" : "false"}
         />
         <Button variant="default" size={"sm"}>
-          {isPending ? (
+          {loading ? (
             <>
               <Loader2 className="animate-spin size-5" /> Sending...
             </>
