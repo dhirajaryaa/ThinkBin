@@ -118,3 +118,7 @@ dist
 .pnp.*
 
 # End of https://mrkandreev.name/snippets/gitignore-generator/#Node
+/src/generated/prisma
+.env.local
+
+/src/generated/prisma

@@ -1,0 +1,30 @@
+.bn-editor {
+  background-color: var(--color-background);
+  /* color: var(--color-foreground); */
+  color : #333333;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+.bn-editor strong {
+  font-weight: 700;
+}
+.bn-editor .bn-inline-content::before{
+  font-weight: 400;
+}
+.bn-editor h1 {
+  font-size: 1.875rem;
+}
+.bn-editor h2 {
+  font-size: 1.5rem;
+}
+.bn-editor h3 {
+  font-size: 1.25rem;
+}
+.bn-editor p {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.bn-editor pre{
+  white-space: pre-wrap !important;
+}

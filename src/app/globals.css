@@ -120,3 +120,7 @@
     @apply bg-background text-foreground;
   }
 }
+
+.editor-bg {
+@apply bg-muted/50;
+}

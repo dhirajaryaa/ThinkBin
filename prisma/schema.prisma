@@ -1,0 +1,98 @@
+generator client {
+  provider        = "prisma-client"
+  output          = "../src/generated/prisma"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  extensions = [vector]
+}
+
+// -------------------------
+// sessions
+// -------------------------
+model Session {
+  token     String   @id
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  ip        String
+  uaBrowser String?
+  uaOS      String?
+  uaDevice  String?
+  createdAt DateTime @default(now())
+  expiredAt DateTime
+
+  @@index([userId])
+  @@index([token])
+}
+
+// -------------------------
+// user
+// -------------------------
+model User {
+  id         String    @id @default(uuid())
+  name       String
+  avatar     String?   @default("")
+  email      String    @unique
+  password   String
+  isVerified Boolean?  @default(true)
+  provider   String?   @default("credential")
+  createdAt  DateTime  @default(now())
+  memories   Memory[]
+  sessions   Session[]
+
+  @@index([email])
+}
+
+// -------------------------
+// MEMORIES (Raw uploaded memories)
+// -------------------------
+model Memory {
+  id         String        @id @default(uuid())
+  user       User          @relation(fields: [userId], references: [id])
+  userId     String
+  title      String?
+  sourceType SourceType    @default(TEXT)
+  sourceLink String?       @default("#")
+  content    String
+  chunks     MemoryChunk[]
+  tags       MemoryTag[]
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+}
+
+enum SourceType {
+  TEXT
+  URL
+  PDF
+  IMAGE
+  CODE
+  OTHER
+}
+
+// -------------------------
+// MEMORY CHUNK (for embeddings)
+// -------------------------
+
+model MemoryChunk {
+  id         String                      @id @default(cuid())
+  memory     Memory                      @relation(fields: [memoryId], references: [id])
+  memoryId   String
+  chunkIndex Int
+  content    String
+  embedding  Unsupported("vector(1536)")
+  createdAt  DateTime                    @default(now())
+}
+
+// -------------------------
+// MEMORY TAG (manual + auto)
+// -------------------------
+model MemoryTag {
+  id         String   @id @default(cuid())
+  memory     Memory   @relation(fields: [memoryId], references: [id])
+  memoryId   String
+  tag        String
+  confidence Float?   @default(1.0)
+  createdAt  DateTime @default(now())
+}
